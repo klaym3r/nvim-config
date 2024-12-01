@@ -1,0 +1,5 @@
+{
+  "inlayHint.enable": false,
+  "python.venvPath" : ".",
+  "python.venv" : "env",
+}
