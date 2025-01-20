@@ -103,7 +103,7 @@ nnoremap ]b :tabnext<cr>
 nnoremap [b :tabprevious<cr>
 
 "increment & decrement
-nnoremap + <C-a>
+nnoremap = <C-a>
 nnoremap - <C-x>
 
 "select all
@@ -151,9 +151,10 @@ function! CheckBackspace() abort
 endfunction
 
 " Running code
-autocmd FileType python map <buffer> <Leader>z kk:w<CR>ss :terminal . ./env/bin/activate; python %<CR>
-" autocmd FileType python map <buffer> <Leader>z kk:w<CR>ss :terminal python %<CR>
-autocmd FileType cpp map <buffer> <Leader>z kk:w<CR>:exec '!g++' shellescape(@%, 1) '-o out'<CR>ss :terminal ./out<CR>
+" autocmd FileType python map <buffer> <Leader>z kk:w<CR>ss :terminal . ./env/bin/activate; python %<CR>
+autocmd FileType python map <buffer> <Leader>z kk:w<CR>ss :terminal python %<CR>
+" autocmd FileType cpp map <buffer> <Leader>z kk:w<CR>:exec '!make -f Makefile' shellescape(@%, 1)<CR>ss :terminal ./a.out<CR>
+autocmd FileType cpp map <buffer> <Leader>z kk:w<CR>:exec '!make -f Makefile'<CR>ss :terminal ./a.out<CR>
 
 lua << EOF
 

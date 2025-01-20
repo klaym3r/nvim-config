@@ -1,5 +1,6 @@
 {
   "inlayHint.enable": false,
   "python.venvPath" : ".",
-  "python.venv" : "env",
+  "python.venv": "env",
+  "coc.preferences.enableMessageLogging" : false,
 }
