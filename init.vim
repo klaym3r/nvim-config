@@ -2,6 +2,7 @@ set mouse=""
 set encoding=utf-8
 set number
 set relativenumber
+set signcolumn=yes
 set cursorline
 set noswapfile
 set scrolloff=7
