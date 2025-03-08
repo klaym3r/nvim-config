@@ -27,8 +27,12 @@ set splitright
 
 call plug#begin('~/.config/nvim/plugged')
 
+" Smoothness
+Plug 'karb94/neoscroll.nvim'
+
 Plug 'neovim/nvim-lspconfig'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'yaegassy/coc-black-formatter', {'do': 'yarn install --frozen-lockfile'}
 
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
@@ -63,6 +67,7 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 
 call plug#end()
 
+
 "" COLORSCHEME / THEME
 
 " nnoremap <Leader>t :Themery<Return>
@@ -75,6 +80,7 @@ call plug#end()
 " let g:transparent_enabled = v:true
 
 let mapleader = " "
+let g:coc_global_extensions = ['coc-omnisharp']
 
 "" KEYMAPS
 
@@ -137,14 +143,11 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " formatting
-xmap <leader>f  <Plug>(coc-format-selected)
-" nmap <leader>f  <Plug>(coc-format-selected)
-" xmap <leader>f  <Plug>(coc-format)
+vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format)
 
 " Add `:OR` command for organize imports of the current buffer (works only
 " with python)
-command! -nargs=0 OR   :CocCommand ruff.executeOrganizeImports
 
 function! CheckBackspace() abort
   let col = col('.') - 1
@@ -152,10 +155,11 @@ function! CheckBackspace() abort
 endfunction
 
 " Running code
-" autocmd FileType python map <buffer> <Leader>z kk:w<CR>ss :terminal . ./env/bin/activate; python %<CR>
-autocmd FileType python map <buffer> <Leader>z kk:w<CR>ss :terminal python %<CR>
+autocmd FileType python map <buffer> <Leader>z kk:w<CR>ss :terminal . env/bin/activate.fish; python %<CR>
+" autocmd FileType python map <buffer> <Leader>z kk:w<CR>ss :terminal python %<CR>
 " autocmd FileType cpp map <buffer> <Leader>z kk:w<CR>:exec '!make -f Makefile' shellescape(@%, 1)<CR>ss :terminal ./a.out<CR>
 autocmd FileType cpp map <buffer> <Leader>z kk:w<CR>:exec '!make -f Makefile'<CR>ss :terminal ./a.out<CR>
+autocmd FileType cs map <buffer> <Leader>z kk:w<CR>ss :terminal dotnet run<CR>
 
 lua << EOF
 
@@ -234,7 +238,7 @@ require'nvim-treesitter.configs'.setup {
     -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
     -- the name of the parser)
     -- list of language that will be disabled
-    disable = { "c", "rust" },
+    disable = { },
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
         local max_filesize = 100 * 1024 -- 100 KB
@@ -248,7 +252,7 @@ require'nvim-treesitter.configs'.setup {
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
     -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
+    additional_vim_regex_highlighting = true,
   },
 }
 
@@ -272,6 +276,27 @@ require("transparent").setup({
   -- function: code to be executed after highlight groups are cleared
   -- Also the user event "TransparentClear" will be triggered
   on_clear = function() end,
+})
+
+require('neoscroll').setup({
+  mappings = {                 -- Keys to be mapped to their corresponding default scrolling animation
+    '<C-u>', '<C-d>',
+    '<C-b>', '<C-f>',
+    '<C-y>', '<C-e>',
+    'zt', 'zz', 'zb',
+  },
+  hide_cursor = true,          -- Hide cursor while scrolling
+  stop_eof = true,             -- Stop at <EOF> when scrolling downwards
+  respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+  cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+  duration_multiplier = 1.0,   -- Global duration multiplier
+  easing = 'linear',           -- Default easing function
+  pre_hook = nil,              -- Function to run before the scrolling animation starts
+  post_hook = nil,             -- Function to run after the scrolling animation ends
+  performance_mode = false,    -- Disable "Performance Mode" on all buffers.
+  ignored_events = {           -- Events ignored while scrolling
+      'WinScrolled', 'CursorMoved'
+  },
 })
 
 EOF

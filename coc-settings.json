@@ -3,4 +3,6 @@
   "python.venvPath" : ".",
   "python.venv": "env",
   "coc.preferences.enableMessageLogging" : false,
+  "omnisharp.useGlobalMono": "always",
+  "omnisharp.path": "/usr/bin/omnisharp"
 }
